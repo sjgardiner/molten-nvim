@@ -6,6 +6,11 @@ local M = {}
 ---@param lang string language of the code
 ---@return string
 M.remove_comments = function(str, lang)
+  -- Handle mismatch between notebooks that list "c++" as the language
+  -- while treesitter uses "cpp"
+  if ( lang == "c++" ) then
+    lang = "cpp"
+  end
   local parser = vim.treesitter.get_string_parser(str, lang)
   local tree = parser:parse()
   local root = tree[1]:root()
